@@ -17,18 +17,19 @@
         <button id = "clear">c</button>
         <button id = "plus">+</button>
         <button id = "minus">-</button>
-        <button id = "multiple">*</button>
+        <button id = "back"><=</button>
     </div>
     <div class = "row"></div>
-        <button id = "num_7">7</button>
-        <button id = "num_8">8</button>
-        <button id = "num_9">9</button>
-        <button id = "divide">/</button>
+    <button id = "num_7">7</button>
+    <button id = "num_8">8</button>
+    <button id = "num_9">9</button>
+    <button id = "multiple">*</button>
     </div>
     <div class = "row">
         <button id = "num_4">4</button>
         <button id = "num_5">5</button>
         <button id = "num_6">6</button>
+        <button id = "divide">/</button>
     </div>
     <div class = "row">
         <button id = "num_1">1</button>
@@ -120,6 +121,18 @@
             operator = '';
             $result.value = '';
         });
+        document.querySelector('#back').addEventListener('click', () => {
+            if(!operator){
+                numOne = numOne.slice(0, -1);
+                $result.value = $result.value.slice(0, -1);
+                return;
+            }
+            if(!numTwo){
+                $result.value = '';
+            }
+            numTwo = numTwo.slice(0, -1);
+            $result.value = $result.value.slice(0, -1);
+        })
 
     </script>
 </body>
