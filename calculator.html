@@ -89,9 +89,16 @@
         let numTwo ='';
         let operator = '';
         
+
         const $operator = document.querySelector('#operator');
         const $result = document.querySelector('#result');
         
+        function init() {
+            numOne = '';
+            numTwo = '';
+            operator = '';
+            $result.value = '';
+        }
         const onClickNumber = (event) => {
             if(!operator){
                 numOne += event.target.textContent;
@@ -104,18 +111,15 @@
             numTwo += event.target.textContent;
             $result.value += event.target.textContent 
         }
-        // html 숫자들 가져옴
-        document.querySelector('#num_0').addEventListener('click', onClickNumber);
-        document.querySelector('#num_1').addEventListener('click', onClickNumber);
-        document.querySelector('#num_2').addEventListener('click', onClickNumber);
-        document.querySelector('#num_3').addEventListener('click', onClickNumber);
-        document.querySelector('#num_4').addEventListener('click', onClickNumber);
-        document.querySelector('#num_5').addEventListener('click', onClickNumber);
-        document.querySelector('#num_6').addEventListener('click', onClickNumber);
-        document.querySelector('#num_7').addEventListener('click', onClickNumber);
-        document.querySelector('#num_8').addEventListener('click', onClickNumber);
-        document.querySelector('#num_9').addEventListener('click', onClickNumber);
+        // html 숫자들 가져오기
+        const numBtn = (num) => {
+            document.querySelector(`#num_${num}`).addEventListener('click', onClickNumber);
+        };
         
+        // 숫자 버튼에 이벤트 등록
+        for (let i = 0; i <= 9; i++) {
+            numBtn(i);
+        }
 
         const onClickOperator = (op) => () => {
             if(numOne){
@@ -132,11 +136,18 @@
         document.querySelector('#divide').addEventListener('click', onClickOperator('/'));
 
         document.querySelector('#calculate').addEventListener('click', () => {
+            if(operator == '+'){
+                const temp = numOne; //+=+= 할때 이용
+                if(numTwo){
+                    $result.value = parseInt(numOne) + parseInt(numTwo);
+                }else{
+                    numTwo = temp;
+                    $result.value = parseInt(numOne) + parseInt(numTwo);
+                    numOne = result.value
+                }
+            }
             if(numTwo){
                 switch(operator){
-                    case '+':
-                        $result.value = parseInt(numOne) + parseInt(numTwo);
-                        break;
                     case '-':
                         $result.value = numOne - numTwo;
                         break;
@@ -144,7 +155,13 @@
                         $result.value = numOne * numTwo;
                         break;
                     case '/':
-                        $result.value = numOne / numTwo;
+                        //0으로는 나누는 경우 예외처리
+                        if(numTwo == 0){
+                            alert('0으로는 못나눠용');
+                            init();
+                        }else{
+                            $result.value = numOne / numTwo;
+                        }
                         break;
                     default:
                         break;
@@ -159,10 +176,7 @@
         });
         //C 버튼 구현
         document.querySelector('#clear').addEventListener('click', () => {
-            numOne = '';
-            numTwo = '';
-            operator = '';
-            $result.value = '';
+            init();
         });
         document.querySelector('#back').addEventListener('click', () => {
             if(!operator){
@@ -173,6 +187,7 @@
             if(!numTwo){
                 $result.value = '';
             }
+            //문자열 자르기 함수
             numTwo = numTwo.slice(0, -1);
             $result.value = $result.value.slice(0, -1);
         })
